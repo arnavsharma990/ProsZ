@@ -1,9 +1,11 @@
 import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, Html } from '@react-three/drei';
-import { ProstheticHand } from './3D/ProstheticHand';
+import { OrbitControls, Html } from '@react-three/drei';
+import { STLHandModel } from './3D/STLHandModel';
 import { LoadingSpinner } from './LoadingSpinner';
+import { ThreeJSErrorBoundary } from './ErrorBoundary';
+import { SimpleEnvironment } from './3D/SimpleEnvironment';
 
 const ComponentLabel: React.FC<{ position: [number, number, number]; title: string; description: string }> = ({
   position,
@@ -88,26 +90,27 @@ export const LabeledModelSection: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="h-64 sm:h-80 md:h-96 lg:h-[600px] xl:h-[700px] relative bg-accent-gray/20 rounded-none backdrop-blur-sm border border-border-color"
+          className="h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[600px] 2xl:h-[700px] relative bg-accent-gray/20 rounded-none backdrop-blur-sm border border-border-color"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <Canvas
-            camera={{ position: [3, 2, 5], fov: 50 }}
-            className="rounded-none"
-          >
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
-            <pointLight position={[-10, 5, -5]} intensity={0.8} color="#f5f5f5" />
-            <pointLight position={[5, -5, 5]} intensity={0.6} color="#f5f5f5" />
-            
-            <Suspense fallback={null}>
-              <ProstheticHand />
-              <Environment preset="city" />
+          <ThreeJSErrorBoundary>
+            <Canvas
+              camera={{ position: [3, 2, 5], fov: 50 }}
+              className="rounded-none"
+            >
+              <ambientLight intensity={0.6} />
+              <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
+              <pointLight position={[-10, 5, -5]} intensity={0.8} color="#f5f5f5" />
+              <pointLight position={[5, -5, 5]} intensity={0.6} color="#f5f5f5" />
               
-              {/* Component Labels */}
+              <Suspense fallback={null}>
+                <STLHandModel stlPath="/models/hand.stl" scale={1.5} />
+                <SimpleEnvironment />
+                
+                {/* Component Labels */}
               {components.map((component, index) => (
                 <ComponentLabel
                   key={index}
@@ -127,6 +130,7 @@ export const LabeledModelSection: React.FC = () => {
               autoRotateSpeed={1}
             />
           </Canvas>
+          </ThreeJSErrorBoundary>
           
           <Suspense fallback={<LoadingSpinner />}>
             <div />
@@ -135,7 +139,7 @@ export const LabeledModelSection: React.FC = () => {
 
         {/* Component Stats */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-12 md:mt-20"
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 mt-8 sm:mt-12 md:mt-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -149,12 +153,12 @@ export const LabeledModelSection: React.FC = () => {
           ].map((stat, index) => (
             <motion.div
               key={index}
-              className="text-center p-4 md:p-6 lg:p-8 bg-secondary-black border border-border-color"
+              className="text-center p-3 sm:p-4 md:p-6 lg:p-8 bg-secondary-black border border-border-color"
               whileHover={{ scale: 1.02, borderColor: "#f5f5f5" }}
               transition={{ duration: 0.2 }}
             >
-              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent-color mb-2 md:mb-3">{stat.value}</div>
-              <div className="text-text-secondary text-sm md:text-base">{stat.label}</div>
+              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-accent-color mb-1 sm:mb-2 md:mb-3">{stat.value}</div>
+              <div className="text-xs sm:text-sm md:text-base text-text-secondary">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>

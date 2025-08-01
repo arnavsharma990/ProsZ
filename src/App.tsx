@@ -2,9 +2,10 @@ import React from 'react';
 import { Navigation } from './components/Navigation';
 import { HeroSection } from './components/HeroSection';
 import { LabeledModelSection } from './components/LabeledModelSection';
+import { CoreTechnologiesSection } from './components/CoreTechnologiesSection';
+import { CoreArchitectureSection } from './components/CoreArchitectureSection';
 import { SensorDashboard } from './components/SensorDashboard';
 import { DeviceControl } from './components/DeviceControl';
-import { TerminalSection } from './components/TerminalSection';
 import { FooterSection } from './components/FooterSection';
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
       <Navigation />
       <HeroSection />
       <LabeledModelSection />
+      <CoreTechnologiesSection />
+      <CoreArchitectureSection />
       <SensorDashboard />
       <DeviceControl />
-      <TerminalSection />
       <FooterSection />
     </div>
   );

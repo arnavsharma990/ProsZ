@@ -83,20 +83,20 @@ export const DeviceControl: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           
           {/* Virtual Hand Display */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-8"
+            className="bg-secondary-black border border-border-color p-4 sm:p-6 lg:p-8"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-3">
-                <Hand size={24} className="text-accent-color" />
-                <h3 className="text-xl font-semibold text-text-primary">Virtual Hand</h3>
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <Hand size={20} className="sm:w-6 sm:h-6 text-accent-color" />
+                <h3 className="text-lg sm:text-xl font-semibold text-text-primary">Virtual Hand</h3>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>

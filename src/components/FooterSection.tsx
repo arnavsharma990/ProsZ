@@ -35,7 +35,7 @@ export const FooterSection: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
           {/* Company Info */}
           <motion.div
             className="lg:col-span-2"
@@ -44,8 +44,8 @@ export const FooterSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl font-semibold text-text-primary mb-4">NeuroxoLabs</h3>
-            <p className="text-text-secondary mb-4">
+            <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-3 sm:mb-4">NeuroxoLabs</h3>
+            <p className="text-sm sm:text-base text-text-secondary mb-3 sm:mb-4">
               Making advanced prosthetics affordable and accessible. 
               Empowering amputees with smart, responsive technology.
             </p>

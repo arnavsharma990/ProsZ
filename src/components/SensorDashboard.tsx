@@ -195,20 +195,20 @@ export const SensorDashboard: React.FC = () => {
         </motion.div>
 
         {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           
           {/* EMG Signal Monitor */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-6"
+            className="bg-secondary-black border border-border-color p-4 sm:p-6"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <Activity size={20} className="text-accent-color" />
-                <h3 className="text-lg font-semibold text-text-primary">EMG Signal</h3>
+            <div className="flex items-center justify-between mb-3 sm:mb-4">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <Activity size={18} className="sm:w-5 sm:h-5 text-accent-color" />
+                <h3 className="text-base sm:text-lg font-semibold text-text-primary">EMG Signal</h3>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -216,10 +216,10 @@ export const SensorDashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="mb-4">
+            <div className="mb-3 sm:mb-4">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-2xl font-bold text-text-primary">{sensorData.emgSignal.toFixed(0)}%</span>
-                <span className="text-sm text-text-secondary">Signal Strength</span>
+                <span className="text-xl sm:text-2xl font-bold text-text-primary">{sensorData.emgSignal.toFixed(0)}%</span>
+                <span className="text-xs sm:text-sm text-text-secondary">Signal Strength</span>
               </div>
               <div className="w-full bg-accent-gray rounded-full h-3">
                 <motion.div
@@ -231,7 +231,7 @@ export const SensorDashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
               <div>
                 <span className="text-text-secondary">Peak:</span>
                 <span className="text-text-primary ml-2">{sensorData.emgPeak.toFixed(0)}%</span>

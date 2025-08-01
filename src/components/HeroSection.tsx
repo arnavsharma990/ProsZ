@@ -1,11 +1,18 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
-import { ProstheticHand } from './3D/ProstheticHand';
+import { OrbitControls, ContactShadows } from '@react-three/drei';
+import { STLHandModel } from './3D/STLHandModel';
 import { LoadingSpinner } from './LoadingSpinner';
+import { ThreeJSErrorBoundary } from './ErrorBoundary';
+import { SimpleEnvironment } from './3D/SimpleEnvironment';
 
 export const HeroSection: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [buttonStates, setButtonStates] = useState({
+    viewTech: false,
+    liveDemo: false
+  });
   return (
     <section id="hero" className="section-padding relative overflow-hidden bg-gradient-dark">
       {/* Minimal Background Pattern */}
@@ -29,7 +36,7 @@ export const HeroSection: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight mb-6 md:mb-8"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold leading-tight mb-4 sm:mb-6 md:mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -42,7 +49,7 @@ export const HeroSection: React.FC = () => {
             </motion.h1>
             
             <motion.p
-              className="text-base sm:text-lg md:text-xl lg:text-2xl text-text-secondary mb-8 md:mb-12 max-w-2xl mx-auto md:mx-0 leading-relaxed"
+              className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-text-secondary mb-6 sm:mb-8 md:mb-12 max-w-2xl mx-auto md:mx-0 leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -52,65 +59,180 @@ export const HeroSection: React.FC = () => {
               precise gesture-controlled prosthetic movement.
             </motion.p>
             
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center md:justify-start"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              <motion.button
-                className="btn-primary text-sm sm:text-base"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                          <motion.div
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center md:justify-start w-full"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
               >
-                View Technology
-              </motion.button>
-              <motion.button
-                className="btn-secondary text-sm sm:text-base"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Live Demo
-              </motion.button>
-            </motion.div>
+                <motion.button
+                  className="btn-primary text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-accent-color/20 w-full sm:w-auto min-w-[140px] sm:min-w-[160px] md:min-w-[180px] relative overflow-hidden group"
+                  whileHover={{ 
+                    scale: 1.05,
+                    y: -2,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{ 
+                    scale: 0.95,
+                    y: 0,
+                    transition: { duration: 0.1 }
+                  }}
+                  onClick={() => {
+                    setButtonStates(prev => ({ ...prev, viewTech: true }));
+                    const techSection = document.getElementById('core-technologies');
+                    if (techSection) {
+                      techSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    setTimeout(() => {
+                      setButtonStates(prev => ({ ...prev, viewTech: false }));
+                    }, 1000);
+                  }}
+                >
+                  {/* Hover Effect Overlay */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-accent-color/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  
+                  <span className="flex items-center justify-center gap-2 relative z-10">
+                    <motion.span 
+                      className="text-lg sm:text-xl"
+                      animate={{ 
+                        rotate: buttonStates.viewTech ? [0, 360] : [0, 10, -10, 0],
+                        scale: buttonStates.viewTech ? [1, 1.2, 1] : 1
+                      }}
+                      transition={{ 
+                        duration: buttonStates.viewTech ? 0.5 : 2, 
+                        repeat: buttonStates.viewTech ? 0 : Infinity, 
+                        repeatDelay: 3 
+                      }}
+                    >
+                      🔬
+                    </motion.span>
+                    <span>{buttonStates.viewTech ? 'Loading...' : 'View Technology'}</span>
+                  </span>
+                </motion.button>
+                
+                <motion.button
+                  className="btn-secondary text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-accent-color/20 w-full sm:w-auto min-w-[140px] sm:min-w-[160px] md:min-w-[180px] relative overflow-hidden group"
+                  whileHover={{ 
+                    scale: 1.05,
+                    y: -2,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{ 
+                    scale: 0.95,
+                    y: 0,
+                    transition: { duration: 0.1 }
+                  }}
+                  onClick={() => {
+                    setButtonStates(prev => ({ ...prev, liveDemo: true }));
+                    setIsLoading(true);
+                    
+                    // Run the Python demo via Flask backend
+                    const runLiveDemo = async () => {
+                      try {
+                        // Show notification
+                        if ('Notification' in window && Notification.permission === 'granted') {
+                          new Notification('Pros Hand Demo', {
+                            body: 'Starting camera and hand tracking demo...',
+                            icon: '/favicon.ico'
+                          });
+                        }
+                        
+                        // Call Flask backend to run demo
+                        const response = await fetch('http://localhost:8000/run-demo');
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                          alert(`✅ ${data.message}\n\n🎬 Camera should open shortly!\n\n📋 Controls:\n• Press 'q' to quit\n• Press 'r' to reset history\n• Press 's' to save frame\n• Press 'h' to toggle help\n\n🎮 Enjoy the Live Demo!`);
+                        } else {
+                          alert(`⚠️ ${data.message}\n\n📋 Manual Steps:\n1. Start Flask server: python app.py\n2. Install requirements: pip install -r requirements.txt\n3. Run: python demo.py\n4. Camera will open for hand tracking`);
+                        }
+                        
+                      } catch (error) {
+                        console.error('Demo error:', error);
+                        alert('❌ Backend connection failed!\n\n📋 Setup Steps:\n1. Install requirements: pip install -r requirements.txt\n2. Start Flask server: python app.py\n3. Keep server running in background\n4. Try Live Demo again\n\n🔧 Server should run on: http://localhost:8000');
+                      } finally {
+                        setIsLoading(false);
+                        setTimeout(() => {
+                          setButtonStates(prev => ({ ...prev, liveDemo: false }));
+                        }, 1000);
+                      }
+                    };
+                    
+                    runLiveDemo();
+                  }}
+                >
+                  {/* Hover Effect Overlay */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  
+                  <span className="flex items-center justify-center gap-2 relative z-10">
+                    <motion.span 
+                      className="text-lg sm:text-xl"
+                      animate={{ 
+                        scale: isLoading ? [1, 1.3, 1] : [1, 1.1, 1],
+                        rotate: isLoading ? [0, 360] : [0, 5, -5, 0]
+                      }}
+                      transition={{ 
+                        duration: isLoading ? 0.8 : 2, 
+                        repeat: isLoading ? Infinity : Infinity, 
+                        repeatDelay: isLoading ? 0 : 2 
+                      }}
+                    >
+                      {isLoading ? '⚡' : '🎬'}
+                    </motion.span>
+                    <span>{isLoading ? 'Starting Demo...' : 'Live Demo'}</span>
+                  </span>
+                </motion.button>
+              </motion.div>
           </motion.div>
 
           {/* 3D Model */}
           <motion.div
-            className="h-64 sm:h-80 md:h-96 lg:h-[500px] xl:h-[600px] relative flex-1 mt-8 md:mt-0"
+            className="h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[500px] 2xl:h-[600px] relative flex-1 mt-6 sm:mt-8 md:mt-0"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <Canvas
-              camera={{ position: [0, 0, 5], fov: 50 }}
-              className="rounded-none border border-border-color"
-            >
-              <ambientLight intensity={0.4} />
-              <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-              <pointLight position={[-10, -10, -5]} intensity={0.5} color="#f5f5f5" />
-              
-              <Suspense fallback={null}>
-                <ProstheticHand />
-                <Environment preset="studio" />
-                <ContactShadows
-                  position={[0, -2, 0]}
-                  opacity={0.75}
-                  scale={8}
-                  blur={2.5}
-                  far={4}
+            <ThreeJSErrorBoundary>
+              <Canvas
+                camera={{ position: [0, 0, 5], fov: 50 }}
+                className="rounded-none border border-border-color"
+              >
+                <ambientLight intensity={0.4} />
+                <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
+                <pointLight position={[-10, -10, -5]} intensity={0.5} color="#f5f5f5" />
+                
+                <Suspense fallback={null}>
+                  <STLHandModel stlPath="/models/hand.stl" scale={1.2} />
+                  <SimpleEnvironment />
+                  <ContactShadows
+                    position={[0, -2, 0]}
+                    opacity={0.75}
+                    scale={8}
+                    blur={2.5}
+                    far={4}
+                  />
+                </Suspense>
+                
+                <OrbitControls
+                  enablePan={false}
+                  enableZoom={true}
+                  minDistance={3}
+                  maxDistance={8}
+                  autoRotate
+                  autoRotateSpeed={0.5}
                 />
-              </Suspense>
-              
-              <OrbitControls
-                enablePan={false}
-                enableZoom={true}
-                minDistance={3}
-                maxDistance={8}
-                autoRotate
-                autoRotateSpeed={0.5}
-              />
-            </Canvas>
+              </Canvas>
+            </ThreeJSErrorBoundary>
             
             {/* Loading Overlay */}
             <Suspense fallback={<LoadingSpinner />}>
