@@ -15,14 +15,20 @@ const ComponentLabel: React.FC<{ position: [number, number, number]; title: stri
   return (
     <Html position={position} className="pointer-events-none">
       <motion.div
-        className="bg-secondary-black/90 backdrop-blur-sm border border-border-color rounded-none p-4 md:p-6 min-w-[200px] md:min-w-[250px] shadow-xl"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
+        className="bg-secondary-black/95 backdrop-blur-md border border-accent-color/40 rounded-xl p-4 md:p-6 min-w-[220px] md:min-w-[280px] shadow-2xl hover:shadow-accent-color/30 transition-all duration-300"
+        initial={{ opacity: 0, scale: 0.8, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        whileHover={{ scale: 1.05, y: -5 }}
         transition={{ duration: 0.5 }}
       >
-        <h4 className="text-accent-color font-semibold mb-2 text-sm md:text-lg">{title}</h4>
-        <p className="text-text-secondary text-xs md:text-sm leading-relaxed">{description}</p>
-        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-secondary-black/90" />
+        <div className="flex items-start gap-3">
+          <div className="w-3 h-3 bg-accent-color rounded-full mt-1 flex-shrink-0 animate-pulse"></div>
+          <div className="flex-1">
+            <h4 className="text-accent-color font-bold mb-2 text-sm md:text-lg">{title}</h4>
+            <p className="text-text-secondary text-xs md:text-sm leading-relaxed">{description}</p>
+          </div>
+        </div>
+        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-secondary-black/95" />
       </motion.div>
     </Html>
   );
@@ -31,27 +37,27 @@ const ComponentLabel: React.FC<{ position: [number, number, number]; title: stri
 export const LabeledModelSection: React.FC = () => {
   const components = [
     {
-      position: [0.6, 1.8, 0.5] as [number, number, number],
+      position: [2.5, 2.0, 0.5] as [number, number, number],
       title: "Servo Motors (MG90/DS3218)",
       description: "5 individual servo motors controlled by MediaPipe angle calculations"
     },
     {
-      position: [-0.8, 0.8, 0.8] as [number, number, number],
+      position: [-2.5, 1.0, 0.8] as [number, number, number],
       title: "3D Printed Frame",
       description: "Recycled ABS plastic for sustainability and affordability"
     },
     {
-      position: [0, -0.2, 0.6] as [number, number, number],
+      position: [0, 0.5, 1.2] as [number, number, number],
       title: "MediaPipe AI",
       description: "Real-time hand landmark detection and angle calculation"
     },
     {
-      position: [0, -1.5, 0.8] as [number, number, number],
+      position: [0, -2.0, 0.8] as [number, number, number],
       title: "Arduino Uno Controller",
       description: "Receives serial data from Python and controls servo motors"
     },
     {
-      position: [-0.4, -0.5, 0.8] as [number, number, number],
+      position: [-1.5, -0.5, 1.0] as [number, number, number],
       title: "Webcam Integration",
       description: "640x480 resolution for hand gesture recognition"
     }
@@ -90,7 +96,7 @@ export const LabeledModelSection: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[600px] 2xl:h-[700px] relative bg-accent-gray/20 rounded-none backdrop-blur-sm border border-border-color"
+          className="h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[600px] 2xl:h-[700px] relative bg-accent-gray/20 rounded-lg backdrop-blur-sm border border-border-color shadow-2xl"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -98,16 +104,47 @@ export const LabeledModelSection: React.FC = () => {
         >
           <ThreeJSErrorBoundary>
             <Canvas
-              camera={{ position: [3, 2, 5], fov: 50 }}
-              className="rounded-none"
+              camera={{ position: [0, 0, 10], fov: 30 }}
+              className="rounded-lg"
+              shadows
+              gl={{ 
+                antialias: true, 
+                alpha: true,
+                powerPreference: "high-performance"
+              }}
             >
-              <ambientLight intensity={0.6} />
-              <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
-              <pointLight position={[-10, 5, -5]} intensity={0.8} color="#f5f5f5" />
-              <pointLight position={[5, -5, 5]} intensity={0.6} color="#f5f5f5" />
+              {/* Professional lighting setup */}
+              <ambientLight intensity={0.4} color="#f0f8ff" />
+              <directionalLight 
+                position={[10, 10, 5]} 
+                intensity={1.6} 
+                castShadow 
+                shadow-mapSize-width={2048}
+                shadow-mapSize-height={2048}
+                shadow-camera-far={50}
+                shadow-camera-left={-10}
+                shadow-camera-right={10}
+                shadow-camera-top={10}
+                shadow-camera-bottom={-10}
+              />
+              <directionalLight 
+                position={[-10, -10, -5]} 
+                intensity={0.8} 
+                color="#e6f3ff"
+              />
+              <pointLight 
+                position={[0, 5, 5]} 
+                intensity={0.6} 
+                color="#ffffff"
+              />
+              <pointLight 
+                position={[0, -5, -5]} 
+                intensity={0.4} 
+                color="#0066cc"
+              />
               
               <Suspense fallback={null}>
-                <STLHandModel stlPath="/models/hand.stl" scale={1.5} />
+                <STLHandModel gltfPath="/models/hand.stl.gltf" scale={4.0} />
                 <SimpleEnvironment />
                 
                 {/* Component Labels */}
@@ -124,10 +161,12 @@ export const LabeledModelSection: React.FC = () => {
             <OrbitControls
               enablePan={false}
               enableZoom={true}
-              minDistance={4}
-              maxDistance={10}
+              minDistance={8}
+              maxDistance={20}
               autoRotate
-              autoRotateSpeed={1}
+              autoRotateSpeed={0.5}
+              enableDamping
+              dampingFactor={0.05}
             />
           </Canvas>
           </ThreeJSErrorBoundary>

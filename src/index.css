@@ -27,6 +27,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Custom scrollbar */
@@ -44,6 +45,19 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Light mode scrollbar adjustments */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: var(--secondary-black);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: var(--accent-gray);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
 
@@ -153,11 +167,35 @@ html {
   background-clip: text;
 }
 
+/* Light mode text gradients */
+[data-theme="light"] .text-gradient {
+  background: linear-gradient(135deg, #1a1a1a 0%, #6c757d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .text-gradient-accent {
+  background: linear-gradient(135deg, #0066cc 0%, #1a1a1a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .bg-gradient-dark {
   background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
 }
 
 .bg-gradient-accent {
+  background: linear-gradient(135deg, var(--accent-gray) 0%, var(--secondary-black) 100%);
+}
+
+/* Light mode background gradients */
+[data-theme="light"] .bg-gradient-dark {
+  background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+}
+
+[data-theme="light"] .bg-gradient-accent {
   background: linear-gradient(135deg, var(--accent-gray) 0%, var(--secondary-black) 100%);
 }
 

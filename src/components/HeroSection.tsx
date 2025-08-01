@@ -204,32 +204,67 @@ export const HeroSection: React.FC = () => {
           >
             <ThreeJSErrorBoundary>
               <Canvas
-                camera={{ position: [0, 0, 5], fov: 50 }}
-                className="rounded-none border border-border-color"
+                camera={{ position: [0, 0, 8], fov: 35 }}
+                className="rounded-lg border border-border-color shadow-2xl"
+                shadows
+                gl={{ 
+                  antialias: true, 
+                  alpha: true,
+                  powerPreference: "high-performance"
+                }}
               >
-                <ambientLight intensity={0.4} />
-                <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-                <pointLight position={[-10, -10, -5]} intensity={0.5} color="#f5f5f5" />
+                {/* Professional lighting setup */}
+                <ambientLight intensity={0.3} color="#f0f8ff" />
+                <directionalLight 
+                  position={[10, 10, 5]} 
+                  intensity={1.8} 
+                  castShadow 
+                  shadow-mapSize-width={2048}
+                  shadow-mapSize-height={2048}
+                  shadow-camera-far={50}
+                  shadow-camera-left={-10}
+                  shadow-camera-right={10}
+                  shadow-camera-top={10}
+                  shadow-camera-bottom={-10}
+                />
+                <directionalLight 
+                  position={[-10, -10, -5]} 
+                  intensity={0.8} 
+                  color="#e6f3ff"
+                />
+                <pointLight 
+                  position={[0, 5, 5]} 
+                  intensity={0.6} 
+                  color="#ffffff"
+                />
+                <pointLight 
+                  position={[0, -5, -5]} 
+                  intensity={0.4} 
+                  color="#0066cc"
+                />
                 
                 <Suspense fallback={null}>
-                  <STLHandModel stlPath="/models/hand.stl" scale={1.2} />
+                  <STLHandModel gltfPath="/models/hand.stl.gltf" scale={3.0} />
                   <SimpleEnvironment />
                   <ContactShadows
-                    position={[0, -2, 0]}
-                    opacity={0.75}
-                    scale={8}
-                    blur={2.5}
-                    far={4}
+                    position={[0, -2.5, 0]}
+                    opacity={0.6}
+                    scale={10}
+                    blur={3}
+                    far={5}
+                    resolution={1024}
                   />
                 </Suspense>
                 
                 <OrbitControls
                   enablePan={false}
                   enableZoom={true}
-                  minDistance={3}
-                  maxDistance={8}
+                  minDistance={6}
+                  maxDistance={15}
                   autoRotate
-                  autoRotateSpeed={0.5}
+                  autoRotateSpeed={0.3}
+                  enableDamping
+                  dampingFactor={0.05}
                 />
               </Canvas>
             </ThreeJSErrorBoundary>
