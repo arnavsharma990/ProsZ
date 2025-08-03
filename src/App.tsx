@@ -7,6 +7,7 @@ import { CoreTechnologiesSection } from './components/CoreTechnologiesSection';
 import { CoreArchitectureSection } from './components/CoreArchitectureSection';
 import { SensorDashboard } from './components/SensorDashboard';
 import { DeviceControl } from './components/DeviceControl';
+import { AboutTeamSection } from './components/AboutTeamSection';
 import { FooterSection } from './components/FooterSection';
 import { ThemeToggle } from './components/ThemeToggle';
 
@@ -22,6 +23,7 @@ function App() {
         <CoreArchitectureSection />
         <SensorDashboard />
         <DeviceControl />
+        <AboutTeamSection />
         <FooterSection />
       </div>
     </ThemeProvider>

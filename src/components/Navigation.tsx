@@ -19,6 +19,7 @@ export const Navigation: React.FC = () => {
     { name: 'Technology', href: '#technology' },
     { name: 'Dashboard', href: '#dashboard' },
     { name: 'Control', href: '#control' },
+    { name: 'Team', href: '#about-team' },
     { name: 'Demo', href: '#demo' }
   ];
 
