@@ -1,30 +1,17 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useLoader } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-import { Mesh, BufferGeometry, Color, Group } from 'three';
-import { Environment } from '@react-three/drei';
+import { Mesh, Group } from 'three';
 
 interface STLHandModelProps {
-  stlPath?: string;
-  gltfPath?: string;
   color?: string;
   scale?: number;
 }
 
 export const STLHandModel: React.FC<STLHandModelProps> = ({ 
-  stlPath = '/models/hand.stl', 
-  gltfPath = '/models/hand.stl.gltf',
   color = '#1a1a1a',
   scale = 1 
 }) => {
-  const meshRef = useRef<Mesh>(null);
-  const groupRef = useRef<Group>(null);
-  const [geometry, setGeometry] = useState<BufferGeometry | null>(null);
-  const [gltfModel, setGltfModel] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
   // Memoize materials to prevent recreation
   const materials = useMemo(() => ({
@@ -44,93 +31,8 @@ export const STLHandModel: React.FC<STLHandModelProps> = ({
     }
   }), []);
 
-  // Optimized model loading with timeout
-  useEffect(() => {
-    const loadModel = async () => {
-      setLoading(true);
-      const timeout = setTimeout(() => {
-        setError('Model loading timeout');
-        setLoading(false);
-      }, 10000); // 10 second timeout
-
-      try {
-        // Try GLTF first
-        const loader = new GLTFLoader();
-        const gltf = await loader.loadAsync(gltfPath);
-        clearTimeout(timeout);
-        setGltfModel(gltf);
-        setLoading(false);
-      } catch (gltfErr) {
-        try {
-          // Fallback to STL
-          const stlLoader = new STLLoader();
-          const geometry = await stlLoader.loadAsync(stlPath);
-          clearTimeout(timeout);
-          setGeometry(geometry);
-          setLoading(false);
-        } catch (stlErr) {
-          clearTimeout(timeout);
-          setError('Model files not found');
-          setLoading(false);
-        }
-      }
-    };
-    
-    loadModel();
-  }, [gltfPath, stlPath]);
-
-  // Optimized animation frame
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.1) * 0.03;
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.01;
-    }
-    if (groupRef.current) {
-      groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.1) * 0.03;
-      groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.01;
-    }
-  });
-
-  // If GLTF model loaded, render it
-  if (gltfModel && gltfModel.scene) {
-    return (
-      <group ref={groupRef} scale={[scale, scale, scale]} position={[0, 0, 0]}>
-        <primitive object={gltfModel.scene} />
-        <pointLight position={[5, 5, 5]} intensity={0.6} color="#ffffff" />
-      </group>
-    );
-  }
-
-  // If loading failed, use simplified prosthetic hand
-  if (error) {
-    return <SimplifiedProstheticHand />;
-  }
-
-  if (loading) {
-    return null;
-  }
-
-  // Render STL geometry
-  if (geometry) {
-    return (
-      <mesh
-        ref={meshRef}
-        position={[0, 0, 0]}
-        scale={[scale, scale, scale]}
-      >
-        <primitive object={geometry} />
-        <meshStandardMaterial 
-          color={color}
-          metalness={0.9} 
-          roughness={0.1}
-          emissive="#001a33"
-          emissiveIntensity={0.05}
-        />
-      </mesh>
-    );
-  }
-
-  return null;
+  // Use simplified prosthetic hand directly
+  return <SimplifiedProstheticHand />;
 };
 
 // Simplified prosthetic hand for better performance
