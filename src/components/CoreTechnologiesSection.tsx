@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 export const CoreTechnologiesSection: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    // Add a subtle entrance animation when the section comes into view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Add a subtle glow effect when section comes into view
+            entry.target.style.boxShadow = '0 0 30px rgba(245, 245, 245, 0.1)';
+            setTimeout(() => {
+              if (entry.target) {
+                entry.target.style.boxShadow = 'none';
+              }
+            }, 2000);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const technologies = [
     {
       id: 1,
@@ -30,7 +58,11 @@ export const CoreTechnologiesSection: React.FC = () => {
   ];
 
   return (
-    <section id="core-technologies" className="section-padding bg-gradient-dark relative overflow-hidden">
+    <section 
+      ref={sectionRef}
+      id="core-technologies" 
+      className="section-padding bg-gradient-dark relative overflow-hidden transition-all duration-500"
+    >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="w-full h-full" style={{
@@ -43,8 +75,9 @@ export const CoreTechnologiesSection: React.FC = () => {
       </div>
 
       <div className="container-fluid relative z-10">
+        {/* Header Section */}
         <motion.div
-          className="text-center mb-16 md:mb-24"
+          className="text-center mb-16 md:mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -58,20 +91,21 @@ export const CoreTechnologiesSection: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
+        {/* Technology Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10 mb-16">
           {technologies.map((tech, index) => (
             <motion.div
               key={tech.id}
-              className="group relative"
+              className="group relative h-full"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
             >
-              <div className="bg-secondary-black/80 backdrop-blur-md border border-border-color rounded-2xl p-8 h-full transition-all duration-500 hover:border-accent-color/50 hover:shadow-2xl hover:shadow-accent-color/20 group-hover:transform group-hover:scale-105">
+              <div className="bg-secondary-black/80 backdrop-blur-md border border-border-color rounded-2xl p-6 md:p-8 h-full flex flex-col transition-all duration-500 hover:border-accent-color/50 hover:shadow-2xl hover:shadow-accent-color/20 group-hover:transform group-hover:scale-105">
                 {/* Icon Container */}
                 <motion.div
-                  className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-r ${tech.color} flex items-center justify-center text-2xl md:text-3xl mb-6 shadow-lg`}
+                  className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-r ${tech.color} flex items-center justify-center text-xl md:text-2xl mb-4 md:mb-6 shadow-lg`}
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -79,27 +113,27 @@ export const CoreTechnologiesSection: React.FC = () => {
                 </motion.div>
                 
                 {/* Title */}
-                <h3 className="text-xl md:text-2xl font-bold mb-4 text-text-primary leading-tight">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold mb-3 md:mb-4 text-text-primary leading-tight flex-shrink-0">
                   {tech.title}
                 </h3>
                 
                 {/* Description */}
-                <p className="text-text-secondary leading-relaxed mb-6 text-sm md:text-base">
+                <p className="text-text-secondary leading-relaxed mb-4 md:mb-6 text-sm md:text-base flex-grow">
                   {tech.description}
                 </p>
                 
                 {/* Features List */}
-                <div className="space-y-2 mb-6">
+                <div className="space-y-2 mb-4 md:mb-6 flex-shrink-0">
                   {tech.features.map((feature, featureIndex) => (
                     <div key={featureIndex} className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-accent-color rounded-full"></div>
+                      <div className="w-2 h-2 bg-accent-color rounded-full flex-shrink-0"></div>
                       <span className="text-sm text-text-secondary">{feature}</span>
                     </div>
                   ))}
                 </div>
                 
                 {/* Status Indicator */}
-                <div className="flex items-center justify-between pt-4 border-t border-border-color">
+                <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-border-color mt-auto">
                   <span className="text-sm text-accent-color font-medium">
                     Active Component
                   </span>
@@ -115,20 +149,20 @@ export const CoreTechnologiesSection: React.FC = () => {
 
         {/* Integration Info */}
         <motion.div
-          className="mt-20 text-center"
+          className="text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className="bg-secondary-black/60 backdrop-blur-md border border-border-color rounded-2xl p-8 md:p-12 max-w-5xl mx-auto">
-            <div className="w-16 h-16 bg-gradient-to-r from-accent-color to-purple-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-6">
+          <div className="bg-secondary-black/60 backdrop-blur-md border border-border-color rounded-2xl p-6 md:p-8 lg:p-12 max-w-4xl mx-auto">
+            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-accent-color to-purple-500 rounded-2xl flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6">
               🔗
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-text-primary">
+            <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4 text-text-primary">
               Seamless Integration
             </h3>
-            <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-3xl mx-auto">
+            <p className="text-base md:text-lg lg:text-xl text-text-secondary leading-relaxed max-w-3xl mx-auto">
               All three core technologies work together in real-time, creating a responsive and intelligent prosthetic system that adapts to user needs and environmental conditions.
             </p>
           </div>

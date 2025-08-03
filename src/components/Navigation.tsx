@@ -16,7 +16,7 @@ export const Navigation: React.FC = () => {
 
   const navItems = [
     { name: 'Product', href: '#hero' },
-    { name: 'Technology', href: '#technology' },
+    { name: 'Technology', href: '#core-technologies' },
     { name: 'Dashboard', href: '#dashboard' },
     { name: 'Control', href: '#control' },
     { name: 'Team', href: '#about-team' },
@@ -32,10 +32,10 @@ export const Navigation: React.FC = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 sm:h-20">
           <motion.div
-            className="text-2xl font-bold text-text-primary"
+            className="text-xl sm:text-2xl font-bold text-text-primary"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
@@ -43,12 +43,12 @@ export const Navigation: React.FC = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-12">
+          <div className="hidden md:flex items-center space-x-8 lg:space-x-12">
             {navItems.map((item, index) => (
               <motion.a
                 key={item.name}
                 href={item.href}
-                className="text-text-secondary hover:text-text-primary font-medium transition-colors duration-300 relative group"
+                className="text-sm lg:text-base text-text-secondary hover:text-text-primary font-medium transition-colors duration-300 relative group"
                 whileHover={{ y: -2 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -59,7 +59,7 @@ export const Navigation: React.FC = () => {
               </motion.a>
             ))}
             <motion.button
-              className="bg-accent-color text-primary-black px-8 py-4 font-medium hover:bg-white transition-colors duration-300"
+              className="bg-accent-color text-primary-black px-6 lg:px-8 py-2 lg:py-3 text-sm lg:text-base font-medium hover:bg-white transition-colors duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0, scale: 0.8 }}
@@ -74,7 +74,7 @@ export const Navigation: React.FC = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-text-primary hover:text-accent-color p-2"
+              className="text-text-primary hover:text-accent-color p-2 transition-colors duration-200"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -99,7 +99,7 @@ export const Navigation: React.FC = () => {
                 {item.name}
               </a>
             ))}
-            <button className="w-full bg-accent-color text-primary-black px-8 py-4 font-medium hover:bg-white transition-colors duration-300 mt-4">
+            <button className="w-full bg-accent-color text-primary-black px-6 py-3 font-medium hover:bg-white transition-colors duration-300 mt-4">
               Get Started
             </button>
           </div>

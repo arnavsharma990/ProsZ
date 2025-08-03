@@ -140,14 +140,16 @@ export const SensorDashboard: React.FC = () => {
       <div className="container-fluid">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-16 md:mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="heading-lg text-gradient mb-6">Real-Time Sensor Dashboard</h2>
-          <p className="body-lg text-text-secondary max-w-3xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 md:mb-8">
+            <span className="text-gradient">Real-Time Sensor Dashboard</span>
+          </h2>
+          <p className="text-lg md:text-xl lg:text-2xl text-text-secondary max-w-4xl mx-auto leading-relaxed">
             Live monitoring of Pros Hand V1.0's vital sensors and performance metrics. 
             Track EMG signals, battery status, temperature, and finger positioning in real-time.
           </p>
@@ -155,7 +157,7 @@ export const SensorDashboard: React.FC = () => {
 
         {/* Simulation Controls */}
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-4 mb-12"
+          className="flex flex-wrap items-center justify-center gap-4 mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -163,7 +165,7 @@ export const SensorDashboard: React.FC = () => {
         >
           <button
             onClick={toggleSimulation}
-            className={`px-6 py-3 font-semibold rounded-none transition-all duration-300 flex items-center space-x-2 ${
+            className={`px-6 py-3 font-semibold rounded-lg transition-all duration-300 flex items-center space-x-2 ${
               isSimulating 
                 ? 'bg-red-600 text-white hover:bg-red-700' 
                 : 'bg-green-600 text-white hover:bg-green-700'
@@ -178,7 +180,7 @@ export const SensorDashboard: React.FC = () => {
             <select
               value={simulationSpeed}
               onChange={(e) => changeSimulationSpeed(Number(e.target.value))}
-              className="bg-secondary-black border border-border-color text-text-primary px-3 py-2 rounded-none text-sm"
+              className="bg-secondary-black border border-border-color text-text-primary px-3 py-2 rounded-lg text-sm"
             >
               <option value={500}>Fast (0.5s)</option>
               <option value={1000}>Normal (1s)</option>
@@ -195,20 +197,20 @@ export const SensorDashboard: React.FC = () => {
         </motion.div>
 
         {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 md:gap-8">
           
           {/* EMG Signal Monitor */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-4 sm:p-6"
+            className="bg-secondary-black/80 backdrop-blur-md border border-border-color p-6 md:p-8 h-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <Activity size={18} className="sm:w-5 sm:h-5 text-accent-color" />
-                <h3 className="text-base sm:text-lg font-semibold text-text-primary">EMG Signal</h3>
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <div className="flex items-center space-x-3">
+                <Activity size={20} className="text-accent-color" />
+                <h3 className="text-lg md:text-xl font-semibold text-text-primary">EMG Signal</h3>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -216,10 +218,10 @@ export const SensorDashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="mb-3 sm:mb-4">
+            <div className="mb-4 md:mb-6">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-xl sm:text-2xl font-bold text-text-primary">{sensorData.emgSignal.toFixed(0)}%</span>
-                <span className="text-xs sm:text-sm text-text-secondary">Signal Strength</span>
+                <span className="text-2xl md:text-3xl font-bold text-text-primary">{sensorData.emgSignal.toFixed(0)}%</span>
+                <span className="text-sm text-text-secondary">Signal Strength</span>
               </div>
               <div className="w-full bg-accent-gray rounded-full h-3">
                 <motion.div
@@ -231,7 +233,7 @@ export const SensorDashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
+            <div className="grid grid-cols-2 gap-4 text-sm md:text-base">
               <div>
                 <span className="text-text-secondary">Peak:</span>
                 <span className="text-text-primary ml-2">{sensorData.emgPeak.toFixed(0)}%</span>
@@ -245,16 +247,16 @@ export const SensorDashboard: React.FC = () => {
 
           {/* Battery Status */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-6"
+            className="bg-secondary-black/80 backdrop-blur-md border border-border-color p-6 md:p-8 h-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
               <div className="flex items-center space-x-3">
                 <Battery size={20} className="text-accent-color" />
-                <h3 className="text-lg font-semibold text-text-primary">Battery Status</h3>
+                <h3 className="text-lg md:text-xl font-semibold text-text-primary">Battery Status</h3>
               </div>
               <div className="flex items-center space-x-2">
                 {sensorData.batteryLevel > 20 ? (
@@ -268,9 +270,9 @@ export const SensorDashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="mb-4">
+            <div className="mb-4 md:mb-6">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-2xl font-bold text-text-primary">{sensorData.batteryLevel.toFixed(0)}%</span>
+                <span className="text-2xl md:text-3xl font-bold text-text-primary">{sensorData.batteryLevel.toFixed(0)}%</span>
                 <span className="text-sm text-text-secondary">Remaining</span>
               </div>
               <div className="w-full bg-accent-gray rounded-full h-3">
@@ -286,7 +288,7 @@ export const SensorDashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-2 gap-4 text-sm md:text-base">
               <div>
                 <span className="text-text-secondary">Voltage:</span>
                 <span className="text-text-primary ml-2">{sensorData.voltage.toFixed(1)}V</span>
@@ -300,16 +302,16 @@ export const SensorDashboard: React.FC = () => {
 
           {/* Connection Status */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-6"
+            className="bg-secondary-black/80 backdrop-blur-md border border-border-color p-6 md:p-8 h-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
               <div className="flex items-center space-x-3">
                 <Wifi size={20} className="text-accent-color" />
-                <h3 className="text-lg font-semibold text-text-primary">Connection</h3>
+                <h3 className="text-lg md:text-xl font-semibold text-text-primary">Connection</h3>
               </div>
               {getStatusIcon(sensorData.connectionStatus)}
             </div>
@@ -350,16 +352,16 @@ export const SensorDashboard: React.FC = () => {
 
           {/* Finger Angles */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-6 lg:col-span-2 xl:col-span-1"
+            className="bg-secondary-black/80 backdrop-blur-md border border-border-color p-6 md:p-8 h-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
               <div className="flex items-center space-x-3">
                 <Activity size={20} className="text-accent-color" />
-                <h3 className="text-lg font-semibold text-text-primary">Finger Positions</h3>
+                <h3 className="text-lg md:text-xl font-semibold text-text-primary">Finger Positions</h3>
               </div>
               <span className="text-sm text-text-secondary">Real-time</span>
             </div>
@@ -388,16 +390,16 @@ export const SensorDashboard: React.FC = () => {
 
           {/* Performance Metrics */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-6"
+            className="bg-secondary-black/80 backdrop-blur-md border border-border-color p-6 md:p-8 h-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
               <div className="flex items-center space-x-3">
                 <Cpu size={20} className="text-accent-color" />
-                <h3 className="text-lg font-semibold text-text-primary">Performance</h3>
+                <h3 className="text-lg md:text-xl font-semibold text-text-primary">Performance</h3>
               </div>
               <span className="text-sm text-text-secondary">Live</span>
             </div>
@@ -454,16 +456,16 @@ export const SensorDashboard: React.FC = () => {
 
           {/* System Health */}
           <motion.div
-            className="bg-secondary-black border border-border-color p-6"
+            className="bg-secondary-black/80 backdrop-blur-md border border-border-color p-6 md:p-8 h-full"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
               <div className="flex items-center space-x-3">
                 <Thermometer size={20} className="text-accent-color" />
-                <h3 className="text-lg font-semibold text-text-primary">System Health</h3>
+                <h3 className="text-lg md:text-xl font-semibold text-text-primary">System Health</h3>
               </div>
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             </div>
@@ -503,7 +505,7 @@ export const SensorDashboard: React.FC = () => {
 
         {/* Connection Toggle */}
         <motion.div
-          className="text-center mt-12"
+          className="text-center mt-12 md:mt-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
@@ -511,7 +513,7 @@ export const SensorDashboard: React.FC = () => {
         >
           <button
             onClick={() => setIsConnected(!isConnected)}
-            className={`px-8 py-4 font-semibold rounded-none transition-all duration-300 ${
+            className={`px-8 py-4 font-semibold rounded-lg transition-all duration-300 ${
               isConnected 
                 ? 'bg-red-600 text-white hover:bg-red-700' 
                 : 'bg-green-600 text-white hover:bg-green-700'

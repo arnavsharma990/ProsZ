@@ -8,6 +8,49 @@ export const HeroSection: React.FC = () => {
     liveDemo: false
   });
 
+  const scrollToTechnology = () => {
+    setButtonStates(prev => ({ ...prev, viewTech: true }));
+    
+    // Find the technology section
+    const techSection = document.getElementById('core-technologies');
+    
+    if (techSection) {
+      // Calculate offset for fixed navigation (assuming nav height is ~80px)
+      const navHeight = 80;
+      const elementPosition = techSection.offsetTop - navHeight;
+      
+      // Add a visual feedback animation to the button
+      const button = document.querySelector('[data-tech-button]') as HTMLElement;
+      if (button) {
+        button.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          button.style.transform = 'scale(1)';
+        }, 150);
+      }
+      
+      // Smooth scroll to the section
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+      
+      // Add a subtle highlight effect to the target section
+      techSection.style.transition = 'all 0.3s ease';
+      techSection.style.transform = 'scale(1.02)';
+      techSection.style.boxShadow = '0 0 30px rgba(245, 245, 245, 0.2)';
+      
+      setTimeout(() => {
+        techSection.style.transform = 'scale(1)';
+        techSection.style.boxShadow = 'none';
+        setButtonStates(prev => ({ ...prev, viewTech: false }));
+      }, 1000);
+    } else {
+      // Fallback if section not found
+      console.warn('Technology section not found');
+      setButtonStates(prev => ({ ...prev, viewTech: false }));
+    }
+  };
+
   return (
     <section id="hero" className="section-padding relative overflow-hidden bg-gradient-dark">
       {/* Minimal Background Pattern */}
@@ -22,16 +65,16 @@ export const HeroSection: React.FC = () => {
       </div>
 
       <div className="container-fluid">
-        <div className="flex-responsive justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12">
           {/* Text Content */}
           <motion.div
-            className="text-center md:text-left flex-1"
+            className="text-center lg:text-left flex-1 max-w-2xl lg:max-w-none"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <motion.h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold leading-tight mb-4 sm:mb-6 md:mb-8"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight mb-6 md:mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -44,7 +87,7 @@ export const HeroSection: React.FC = () => {
             </motion.h1>
 
             <motion.p
-              className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-text-secondary mb-6 sm:mb-8 md:mb-12 max-w-2xl mx-auto md:mx-0 leading-relaxed"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-text-secondary mb-8 md:mb-12 leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -55,21 +98,17 @@ export const HeroSection: React.FC = () => {
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center md:justify-start w-full"
+              className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center lg:justify-start"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <motion.button
-                className="btn-primary text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-accent-color/20 w-full sm:w-auto min-w-[140px] sm:min-w-[160px] md:min-w-[180px] relative overflow-hidden group"
+                data-tech-button
+                className="btn-primary text-sm md:text-base px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-accent-color/20 w-full sm:w-auto min-w-[160px] md:min-w-[180px] relative overflow-hidden group"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setButtonStates(prev => ({ ...prev, viewTech: true }));
-                  const techSection = document.getElementById('core-technologies');
-                  if (techSection) techSection.scrollIntoView({ behavior: 'smooth' });
-                  setTimeout(() => setButtonStates(prev => ({ ...prev, viewTech: false })), 1000);
-                }}
+                onClick={scrollToTechnology}
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-accent-color/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -79,7 +118,7 @@ export const HeroSection: React.FC = () => {
                 />
                 <span className="flex items-center justify-center gap-2 relative z-10">
                   <motion.span 
-                    className="text-lg sm:text-xl"
+                    className="text-lg md:text-xl"
                     animate={{ rotate: buttonStates.viewTech ? [0, 360] : [0, 10, -10, 0] }}
                     transition={{ duration: buttonStates.viewTech ? 0.5 : 2, repeat: buttonStates.viewTech ? 0 : Infinity, repeatDelay: 3 }}
                   >
@@ -90,7 +129,7 @@ export const HeroSection: React.FC = () => {
               </motion.button>
 
               <motion.button
-                className="btn-secondary text-xs sm:text-sm md:text-base px-4 sm:px-6 py-2 sm:py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-accent-color/20 w-full sm:w-auto min-w-[140px] sm:min-w-[160px] md:min-w-[180px] relative overflow-hidden group"
+                className="btn-secondary text-sm md:text-base px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-accent-color/20 w-full sm:w-auto min-w-[160px] md:min-w-[180px] relative overflow-hidden group"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
@@ -124,7 +163,7 @@ export const HeroSection: React.FC = () => {
                 />
                 <span className="flex items-center justify-center gap-2 relative z-10">
                   <motion.span 
-                    className="text-lg sm:text-xl"
+                    className="text-lg md:text-xl"
                     animate={{ scale: isLoading ? [1, 1.3, 1] : [1, 1.1, 1], rotate: isLoading ? [0, 360] : [0, 5, -5, 0] }}
                     transition={{ duration: isLoading ? 0.8 : 2, repeat: Infinity, repeatDelay: 0 }}
                   >
@@ -136,9 +175,9 @@ export const HeroSection: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* Replaced 3D Canvas with Static Image */}
+          {/* Image Section */}
           <motion.div
-            className="h-auto w-full sm:w-[400px] md:w-[500px] lg:w-[600px] xl:w-[700px] 2xl:w-[800px] relative flex-1 mt-6 sm:mt-8 md:mt-0"
+            className="w-full lg:w-1/2 max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto lg:mx-0"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}

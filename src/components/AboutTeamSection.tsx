@@ -89,7 +89,7 @@ export const AboutTeamSection: React.FC = () => {
       <div className="container-fluid relative z-10">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16 md:mb-24"
+          className="text-center mb-16 md:mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -108,7 +108,7 @@ export const AboutTeamSection: React.FC = () => {
 
         {/* Team Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-12"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -117,17 +117,17 @@ export const AboutTeamSection: React.FC = () => {
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
-              className="group relative"
+              className="group relative h-full"
               variants={memberVariants}
               whileHover={{ y: -10 }}
               transition={{ duration: 0.3 }}
             >
               {/* Team Member Card */}
-              <div className="bg-secondary-black/80 backdrop-blur-md border border-border-color rounded-2xl p-6 md:p-8 h-full transition-all duration-300 group-hover:border-accent-color/50 group-hover:shadow-2xl group-hover:shadow-accent-color/20">
+              <div className="bg-secondary-black/80 backdrop-blur-md border border-border-color rounded-2xl p-6 md:p-8 h-full flex flex-col transition-all duration-300 group-hover:border-accent-color/50 group-hover:shadow-2xl group-hover:shadow-accent-color/20">
                 
                 {/* Avatar */}
                 <motion.div
-                  className="text-6xl md:text-8xl mb-6 text-center"
+                  className="text-center mb-6 md:mb-8"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.3 }}
                 >
@@ -135,7 +135,7 @@ export const AboutTeamSection: React.FC = () => {
                     <img 
                       src={member.image} 
                       alt={member.name}
-                      className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover mx-auto"
+                      className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full object-cover mx-auto"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                         e.currentTarget.nextSibling.style.display = 'block';
@@ -148,20 +148,20 @@ export const AboutTeamSection: React.FC = () => {
                 </motion.div>
 
                 {/* Member Info */}
-                <div className="text-center">
-                  <h3 className="text-xl md:text-2xl font-bold text-accent-color mb-2">
+                <div className="text-center flex-grow">
+                  <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-accent-color mb-2 md:mb-3">
                     {member.name}
                   </h3>
-                  <p className="text-sm md:text-base text-text-secondary mb-4 font-medium">
+                  <p className="text-sm md:text-base lg:text-lg text-text-secondary mb-4 md:mb-6 font-medium">
                     {member.role}
                   </p>
-                  <p className="text-xs md:text-sm text-text-secondary leading-relaxed">
+                  <p className="text-xs md:text-sm lg:text-base text-text-secondary leading-relaxed">
                     {member.description}
                   </p>
                 </div>
 
                 {/* Social Links */}
-                <div className="flex justify-center gap-4 mt-6 pt-6 border-t border-border-color">
+                <div className="flex justify-center gap-4 mt-6 md:mt-8 pt-6 border-t border-border-color">
                   {member.linkedin && (
                     <motion.a
                       href={member.linkedin}
@@ -213,7 +213,7 @@ export const AboutTeamSection: React.FC = () => {
 
         {/* Team Stats */}
         <motion.div
-          className="mt-16 md:mt-24 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
+          className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
