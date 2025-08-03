@@ -27,18 +27,18 @@ export const AboutTeamSection: React.FC = () => {
       role: "AI/ML Engineer",
       description: "Expert in MediaPipe integration and computer vision. Develops real-time hand tracking algorithms and gesture recognition systems for intuitive prosthetic control.",
       image: "/images/team/prakhar.jpg",
-      linkedin: "#",
-      github: "#",
-      email: "prakhar@neuroxolabs.in"
+      linkedin: "https://www.linkedin.com/in/prakhar-singh-73899929b/",
+      github: "https://github.com/codingoclock",
+      email: "justprakharsingh@gmail.com"
     },
     {
       name: "Ratna Priya",
       role: "Software Developer",
       description: "Full-stack developer specializing in Python, React, and embedded systems. Creates user interfaces and backend systems for seamless prosthetic operation.",
       image: "/images/team/ratna.jpg",
-      linkedin: "#",
-      github: "#",
-      email: "ratna@neuroxolabs.in"
+      linkedin: "http://www.linkedin.com/in/ratnapriya2954",
+      github: "https://github.com/being-iota",
+      email: "ratnapriya2954@gmail.com"
     },
     {
       name: "Arnav Sharma",

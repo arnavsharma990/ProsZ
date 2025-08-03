@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Html } from '@react-three/drei';
@@ -15,26 +15,29 @@ const ComponentLabel: React.FC<{ position: [number, number, number]; title: stri
   return (
     <Html position={position} className="pointer-events-none">
       <motion.div
-        className="bg-secondary-black/95 backdrop-blur-md border border-accent-color/40 rounded-xl p-6 md:p-8 min-w-[300px] md:min-w-[400px] lg:min-w-[500px] shadow-2xl hover:shadow-accent-color/30 transition-all duration-300"
+        className="bg-secondary-black/95 backdrop-blur-md border border-accent-color/40 rounded-xl p-4 md:p-6 min-w-[250px] md:min-w-[300px] shadow-2xl hover:shadow-accent-color/30 transition-all duration-300"
         initial={{ opacity: 0, scale: 0.8, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        whileHover={{ scale: 1.08, y: -8 }}
-        transition={{ duration: 0.5 }}
+        whileHover={{ scale: 1.05, y: -5 }}
+        transition={{ duration: 0.4 }}
       >
-        <div className="flex items-start gap-4">
-          <div className="w-4 h-4 bg-accent-color rounded-full mt-2 flex-shrink-0 animate-pulse"></div>
+        <div className="flex items-start gap-3">
+          <div className="w-3 h-3 bg-accent-color rounded-full mt-2 flex-shrink-0 animate-pulse"></div>
           <div className="flex-1">
-            <h4 className="text-accent-color font-bold mb-3 text-base md:text-xl lg:text-2xl">{title}</h4>
-            <p className="text-text-secondary text-sm md:text-base lg:text-lg leading-relaxed">{description}</p>
+            <h4 className="text-accent-color font-bold mb-2 text-sm md:text-lg">{title}</h4>
+            <p className="text-text-secondary text-xs md:text-sm leading-relaxed">{description}</p>
           </div>
         </div>
-        <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-6 border-r-6 border-t-6 border-transparent border-t-secondary-black/95" />
+        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-secondary-black/95" />
       </motion.div>
     </Html>
   );
 };
 
 export const LabeledModelSection: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [is3DLoaded, setIs3DLoaded] = useState(false);
+
   const components = [
     {
       position: [3.5, 2.5, 0.5] as [number, number, number],
@@ -63,6 +66,25 @@ export const LabeledModelSection: React.FC = () => {
     }
   ];
 
+  // Intersection Observer for performance
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const element = document.getElementById('technology');
+    if (element) {
+      observer.observe(element);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="technology" className="section-padding bg-gradient-accent">
       {/* Minimal Background Pattern */}
@@ -81,7 +103,7 @@ export const LabeledModelSection: React.FC = () => {
           className="text-center mb-12 md:mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 md:mb-8">
@@ -99,107 +121,51 @@ export const LabeledModelSection: React.FC = () => {
           className="h-48 sm:h-64 md:h-80 lg:h-96 xl:h-[600px] 2xl:h-[700px] relative bg-accent-gray/20 rounded-lg backdrop-blur-sm border border-border-color shadow-2xl"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <ThreeJSErrorBoundary>
-            <Canvas
-              camera={{ position: [0, 0, 10], fov: 30 }}
-              className="rounded-lg"
-              shadows
-              gl={{ 
-                antialias: true, 
-                alpha: true,
-                powerPreference: "high-performance"
-              }}
-            >
-              {/* Professional lighting setup */}
-              <ambientLight intensity={0.4} color="#f0f8ff" />
-              <directionalLight 
-                position={[10, 10, 5]} 
-                intensity={1.6} 
-                castShadow 
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
-                shadow-camera-far={50}
-                shadow-camera-left={-10}
-                shadow-camera-right={10}
-                shadow-camera-top={10}
-                shadow-camera-bottom={-10}
-              />
-              <directionalLight 
-                position={[-10, -10, -5]} 
-                intensity={0.8} 
-                color="#e6f3ff"
-              />
-              <pointLight 
-                position={[0, 5, 5]} 
-                intensity={0.6} 
-                color="#ffffff"
-              />
-              <pointLight 
-                position={[0, -5, -5]} 
-                intensity={0.4} 
-                color="#0066cc"
-              />
-              
-              <Suspense fallback={null}>
-                <STLHandModel gltfPath="/models/hand.stl.gltf" scale={4.0} />
+          {isVisible && (
+            <ThreeJSErrorBoundary>
+              <Canvas
+                camera={{ position: [0, 0, 8], fov: 50 }}
+                gl={{ antialias: true, alpha: true }}
+                onCreated={() => setIs3DLoaded(true)}
+                performance={{ min: 0.5 }}
+              >
                 <SimpleEnvironment />
+                <Suspense fallback={null}>
+                  <STLHandModel />
+                </Suspense>
+                <OrbitControls 
+                  enableZoom={true}
+                  enablePan={false}
+                  enableRotate={true}
+                  maxPolarAngle={Math.PI / 2}
+                  minPolarAngle={Math.PI / 6}
+                  maxDistance={15}
+                  minDistance={3}
+                  autoRotate={true}
+                  autoRotateSpeed={0.5}
+                />
                 
                 {/* Component Labels */}
-              {components.map((component, index) => (
-                <ComponentLabel
-                  key={index}
-                  position={component.position}
-                  title={component.title}
-                  description={component.description}
-                />
-              ))}
-            </Suspense>
-            
-            <OrbitControls
-              enablePan={false}
-              enableZoom={true}
-              minDistance={8}
-              maxDistance={20}
-              autoRotate
-              autoRotateSpeed={0.5}
-              enableDamping
-              dampingFactor={0.05}
-            />
-          </Canvas>
-          </ThreeJSErrorBoundary>
+                {is3DLoaded && components.map((component, index) => (
+                  <ComponentLabel
+                    key={index}
+                    position={component.position}
+                    title={component.title}
+                    description={component.description}
+                  />
+                ))}
+              </Canvas>
+            </ThreeJSErrorBoundary>
+          )}
           
-          <Suspense fallback={<LoadingSpinner />}>
-            <div />
-          </Suspense>
-        </motion.div>
-
-        {/* Component Stats */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 mt-8 sm:mt-12 md:mt-20"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          {[
-            { label: "MediaPipe FPS", value: "30" },
-            { label: "Hand Landmarks", value: "21" },
-            { label: "Finger Joints", value: "5" },
-            { label: "Serial Baud", value: "9600" }
-          ].map((stat, index) => (
-            <motion.div
-              key={index}
-              className="text-center p-3 sm:p-4 md:p-6 lg:p-8 bg-secondary-black border border-border-color"
-              whileHover={{ scale: 1.02, borderColor: "#f5f5f5" }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-accent-color mb-1 sm:mb-2 md:mb-3">{stat.value}</div>
-              <div className="text-xs sm:text-sm md:text-base text-text-secondary">{stat.label}</div>
-            </motion.div>
-          ))}
+          {!is3DLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <LoadingSpinner />
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

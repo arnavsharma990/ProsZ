@@ -8,7 +8,7 @@ export const ThemeToggle: React.FC = () => {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="fixed top-6 right-6 z-50 w-12 h-12 rounded-full bg-secondary-black border border-border-color flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg"
+      className="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-secondary-black border border-border-color flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, y: -20 }}
@@ -20,7 +20,7 @@ export const ThemeToggle: React.FC = () => {
         initial={{ rotate: -180, opacity: 0 }}
         animate={{ rotate: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="text-accent-color text-xl"
+        className="text-accent-color text-lg sm:text-xl"
       >
         {theme === 'dark' ? '☀️' : '🌙'}
       </motion.div>
